@@ -71,3 +71,39 @@ Some unknowns I was worried about but didn't explore:
 todo
 
 #### Just files
+
+## Schema
+
+### Decks
+
+- deck name
+- deck id
+- trashed
+- sync number
+
+### Cards
+
+- deck id
+- card id
+- front
+- back
+- front media id
+- back media id
+- trashed
+- sync number
+
+### Reviews
+
+- card id
+- review id
+- repetitions
+- interval
+- due_at
+- reviewed_at
+- trashed
+- sync number
+
+
+### Media
+
+- media id
