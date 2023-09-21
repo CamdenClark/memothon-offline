@@ -3,52 +3,57 @@ import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 
 import * as Comlink from "comlink";
 
-const up = `CREATE TABLE cards (
+const up = `CREATE TABLE IF NOT EXISTS cards (
     id TEXT PRIMARY KEY,
     front TEXT,
     back TEXT
 );
-INSERT INTO cards (id, front, back) VALUES ('foo', 'front', 'back');
+INSERT INTO cards (id, front, back) VALUES ('baz', 'front', 'back');
+INSERT INTO cards (id, front, back) VALUES ('bar', 'front', 'back');
 `;
 
+interface WorkerData {
+    db: any;
+    init: () => Promise<any>;
+    query: (sql: string, bind: (string | number)[]) => Promise<any>;
+    select: () => any;
+    cleanup: () => Promise<any>;
+}
 
-const data = {
+const data: WorkerData = {
     db: null,
-    init() {
-        sqlite3InitModule({
+    async init() {
+        const sqlite3 = await sqlite3InitModule({
             print: console.log,
             printErr: console.error,
-        }).then((sqlite3) => {
-            console.log('Done initializing. Running demo...');
-            try {
-                if ('opfs' in sqlite3) {
-                    this.db = new sqlite3.oo1.OpfsDb('/mydb.sqlite3');
-                    console.log('OPFS is available, created persisted database at', this.db.filename);
-                    this.query(up, []);
-                } else {
-                    this.db = new sqlite3.oo1.DB('/mydb.sqlite3', 'ct');
-                    console.log('OPFS is not available, created transient database', this.db.filename);
-                }
-            } catch (err) {
-                console.error(err.name, err.message);
-            }
         });
+        console.log('Done initializing. Running demo...');
+        try {
+            if ('opfs' in sqlite3) {
+                this.db = new sqlite3.oo1.OpfsDb('/mydb.sqlite3');
+                console.log('OPFS is available, created persisted database at', this.db.filename);
+                this.query(up, []);
+            } else {
+                this.db = new sqlite3.oo1.DB('/mydb.sqlite3', 'ct');
+                console.log('OPFS is not available, created transient database', this.db.filename);
+            }
+        } catch (err: any) {
+            console.error(err.name, err.message);
+        }
     },
     query(sql: string, bind: any) {
-        return new Promise((resolve, reject) => {
-            if (!this.db) {
-                reject();
-                return;
-            }
-            this.db.exec({ sql, bind, rowMode: "object", callback: resolve });
-        });
+        if (!this.db) {
+            return;
+        }
+        return this.db.exec({ sql, bind, returnValue: "resultRows", rowMode: "object" });
     },
     select() {
-        return this.query("SELECT * from cards", [])
+        return this.query("SELECT * from cards", []);
     },
     async cleanup() {
         const opfsRoot = await navigator.storage.getDirectory();
         await opfsRoot.removeEntry("mydb.sqlite3");
+        await this.init();
     }
 }
 
