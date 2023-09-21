@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutationHook } from "./StoreProvider";
 import { useQueryClient } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
+import rehypePrism from "@mapbox/rehype-prism";
 
 const createSQL = `INSERT INTO cards (id, front, back)
     VALUES (?,?,?);`
@@ -38,7 +39,8 @@ export function CreateCard() {
             />
             <button onClick={createCard}>Create Card</button>
 
-            <ReactMarkdown>{ front + "\n\n" + back }</ReactMarkdown>
+            <ReactMarkdown rehypePlugins={[[rehypePrism, { ignoreMissing: true }]]}>
+                {front + "\n\n---\n\n" + back}</ReactMarkdown>
         </div>
     );
 }
