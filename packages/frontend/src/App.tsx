@@ -1,4 +1,4 @@
-import { useQueryHook } from "./StoreProvider";
+import { useLoaderData } from "react-router-dom";
 
 interface Card {
     id: string,
@@ -6,8 +6,11 @@ interface Card {
     back: string
 }
 
+const loader = ({ query }) => async ({ request, params }) => {
+    return query("SELECT * from cards", []);
+}
 function App() {
-    const { data } = useQueryHook<Card>(["cards"], "SELECT * from cards", []);
+    const data = useLoaderData();
 
     return (
         <main>
@@ -19,4 +22,4 @@ function App() {
     )
 }
 
-export default App
+export { App, loader };

@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import App from "./App";
+import { App, loader as listLoader } from "./App";
 import ErrorPage from "./ErrorPage";
 import { CreateCard, action as createAction } from "./CreateCard";
 import { StoreContext } from "./StoreProvider";
@@ -12,13 +12,14 @@ export default function Router() {
         {
             path: "/",
             element: <App />,
-            errorElement: <ErrorPage />
+            errorElement: <ErrorPage />,
+            loader: listLoader(providerContext)
         },
         {
             path: "create",
             element: <CreateCard />,
             action: createAction(providerContext)
-        }
+        },
     ]);
     return <RouterProvider router={router} />
 }
