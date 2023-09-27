@@ -1,5 +1,4 @@
 import { useQueryHook } from "./StoreProvider";
-import { CreateCard } from './CreateCard';
 
 interface Card {
     id: string,
@@ -11,13 +10,12 @@ function App() {
     const { data } = useQueryHook<Card>(["cards"], "SELECT * from cards", []);
 
     return (
-        <div>
-            <CreateCard />
+        <main>
             {data && data.map(card =>
                 <div key={card.id}>
                     {card.front} - {card.back}
                 </div>)}
-        </div>
+        </main>
     )
 }
 

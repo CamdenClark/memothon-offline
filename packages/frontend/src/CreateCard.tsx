@@ -7,7 +7,7 @@ import rehypePrism from "@mapbox/rehype-prism";
 const createSQL = `INSERT INTO cards (id, front, back)
     VALUES (?,?,?);`
 
-export function CreateCard() {
+function CreateCard() {
     const [front, setFront] = useState("");
     const [back, setBack] = useState("");
     const { mutate } = useMutationHook(createSQL, {
@@ -26,7 +26,7 @@ export function CreateCard() {
             })
     }
     return (
-        <div>
+        <main>
             <textarea
                 placeholder='Front side of card'
                 value={front}
@@ -41,6 +41,9 @@ export function CreateCard() {
 
             <ReactMarkdown rehypePlugins={[[rehypePrism, { ignoreMissing: true }]]}>
                 {front + "\n\n---\n\n" + back}</ReactMarkdown>
-        </div>
+        </main>
     );
 }
+
+export { CreateCard };
+
