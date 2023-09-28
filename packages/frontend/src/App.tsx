@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, Outlet, useLoaderData } from "react-router-dom";
 
 interface Card {
     id: string,
@@ -9,16 +9,19 @@ interface Card {
 const loader = ({ query }) => async ({ request, params }) => {
     return query("SELECT * from cards", []);
 }
-function App() {
-    const data = useLoaderData();
 
+function App() {
     return (
-        <main>
-            {data && data.map(card =>
-                <div key={card.id}>
-                    {card.front} - {card.back}
-                </div>)}
-        </main>
+        <>
+            <header className="navbar">
+                <nav>
+                    <Link to="/">memothon</Link>
+                </nav>
+            </header>
+            <main>
+                <Outlet />
+            </main>
+        </>
     )
 }
 

@@ -10,7 +10,6 @@ const action = ({ query }) => async ({ request, params }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     return query(createSQL, [crypto.randomUUID(), data.front, data.back]);
-
 }
 
 function CreateCard() {
@@ -18,26 +17,49 @@ function CreateCard() {
     const [back, setBack] = useState("");
 
     return (
-        <main>
-            <Form method="post">
+        <>
+            <Form className="rows" method="post" onSubmit={() => {
+                setFront("");
+                setBack("");
+            }}>
+                <label htmlFor="front">Front</label>
                 <textarea
                     name="front"
-                    placeholder='Front side of card'
+                    rows={4}
+                    style={{ resize: "none",
+                        maxWidth: 700,
+                    width: "100%"}}
                     value={front}
                     onChange={(e) => setFront(e.target.value)}
                 />
+                <label htmlFor="back">Back</label>
+
                 <textarea
-                    placeholder='Back side of card'
                     name="back"
+                    rows={4}
+                    style={{
+                        resize: "none",
+                        width: "100%",
+                        maxWidth: 700
+
+                    }}
                     value={back}
                     onChange={(e) => setBack(e.target.value)}
                 />
-                <button type="submit">Create</button>
+                <div>
+                <button className="big margin-block-start" type="submit">Create</button>
+                </div>
             </Form>
+            <div className='box'
+                style={{ minHeight: 200 }}>
+                <div className="titlebar">Preview
+                </div>
 
-            <ReactMarkdown rehypePlugins={[[rehypePrism, { ignoreMissing: true }]]}>
-                {front + "\n\n---\n\n" + back}</ReactMarkdown>
-        </main>
+                <ReactMarkdown rehypePlugins={[[rehypePrism, { ignoreMissing: true }]]}>
+                    {front + (back !== "" ? "\n\n---\n\n" + back : "")}</ReactMarkdown>
+            </div>
+
+        </>
     );
 }
 

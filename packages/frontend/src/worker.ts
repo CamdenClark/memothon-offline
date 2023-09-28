@@ -6,10 +6,8 @@ import * as Comlink from "comlink";
 const up = `CREATE TABLE IF NOT EXISTS cards (
     id TEXT PRIMARY KEY,
     front TEXT,
-    back TEXT
+    back TEXT,
 );
-INSERT INTO cards (id, front, back) VALUES ('baz', 'front', 'back');
-INSERT INTO cards (id, front, back) VALUES ('bar', 'front', 'back');
 `;
 
 interface WorkerData {
