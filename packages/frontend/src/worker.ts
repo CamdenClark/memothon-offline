@@ -6,7 +6,14 @@ import * as Comlink from "comlink";
 const up = `CREATE TABLE IF NOT EXISTS cards (
     id TEXT PRIMARY KEY,
     front TEXT,
-    back TEXT,
+    back TEXT
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id TEXT PRIMARY KEY,
+    card_id TEXT,
+    reviewed_at TEXT,
+    due_at TEXT
 );
 `;
 

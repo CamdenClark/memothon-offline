@@ -3,6 +3,7 @@ import { App, loader as listLoader } from "./App";
 import Home from "./Home";
 import ErrorPage from "./ErrorPage";
 import { CreateCard, action as createAction } from "./CreateCard";
+import { Review, loader as reviewLoader } from "./Review";
 import { StoreContext } from "./StoreProvider";
 import { useContext } from "react";
 
@@ -24,6 +25,11 @@ export default function Router() {
                     path: "create",
                     element: <CreateCard />,
                     action: createAction(providerContext)
+                },
+                {
+                    path: "review",
+                    element: <Review />,
+                    loader: reviewLoader(providerContext),
                 },
             ]
         },

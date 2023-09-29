@@ -3,13 +3,16 @@ import ReactMarkdown from 'react-markdown';
 import rehypePrism from "@mapbox/rehype-prism";
 import { Form } from 'react-router-dom';
 
-const createSQL = `INSERT INTO cards (id, front, back)
-    VALUES (?,?,?);`
+const createCardSQL = `INSERT INTO cards (id, front, back) VALUES (?,?,?);`
+
+const createReviewSQL = `INSERT INTO reviews (id, card_id, reviewed_at, due_at) VALUES (?,?,?,?);`
 
 const action = ({ query }) => async ({ request, params }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    return query(createSQL, [crypto.randomUUID(), data.front, data.back]);
+    const newCardId = crypto.randomUUID();
+    await query(createCardSQL, [newCardId, data.front, data.back]);
+    return await query(createReviewSQL, [crypto.randomUUID(), newCardId, Date.now().toString(), Date.now().toString()]);
 }
 
 function CreateCard() {
@@ -26,9 +29,11 @@ function CreateCard() {
                 <textarea
                     name="front"
                     rows={4}
-                    style={{ resize: "none",
+                    style={{
+                        resize: "none",
                         maxWidth: 700,
-                    width: "100%"}}
+                        width: "100%"
+                    }}
                     value={front}
                     onChange={(e) => setFront(e.target.value)}
                 />
@@ -47,7 +52,7 @@ function CreateCard() {
                     onChange={(e) => setBack(e.target.value)}
                 />
                 <div>
-                <button className="big margin-block-start" type="submit">Create</button>
+                    <button className="big margin-block-start" type="submit">Create</button>
                 </div>
             </Form>
             <div className='box'
