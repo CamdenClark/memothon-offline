@@ -8,6 +8,8 @@ function Home() {
     return (
         <div>
             <Link to={"/create"}>Create</Link>
+            <br />
+            <Link to={"/review"}>Review</Link>
             <div onClick={() => cleanup()}>Cleanup</div>
 
         </div>

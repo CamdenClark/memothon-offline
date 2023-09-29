@@ -12,8 +12,8 @@ const up = `CREATE TABLE IF NOT EXISTS cards (
 CREATE TABLE IF NOT EXISTS reviews (
     id TEXT PRIMARY KEY,
     card_id TEXT,
-    reviewed_at TEXT,
-    due_at TEXT
+    reviewed_at integer,
+    due_at integer
 );
 `;
 

@@ -5,14 +5,14 @@ import { Form } from 'react-router-dom';
 
 const createCardSQL = `INSERT INTO cards (id, front, back) VALUES (?,?,?);`
 
-const createReviewSQL = `INSERT INTO reviews (id, card_id, reviewed_at, due_at) VALUES (?,?,?,?);`
+const createReviewSQL = `INSERT INTO reviews (id, card_id, reviewed_at, due_at) VALUES (?,?,unixepoch(),unixepoch());`
 
 const action = ({ query }) => async ({ request, params }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     const newCardId = crypto.randomUUID();
     await query(createCardSQL, [newCardId, data.front, data.back]);
-    return await query(createReviewSQL, [crypto.randomUUID(), newCardId, Date.now().toString(), Date.now().toString()]);
+    return await query(createReviewSQL, [crypto.randomUUID(), newCardId]);
 }
 
 function CreateCard() {
