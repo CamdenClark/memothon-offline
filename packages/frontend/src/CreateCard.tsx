@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import rehypePrism from "@mapbox/rehype-prism";
 import { Form } from 'react-router-dom';
 import Card from './components/Card';
 
