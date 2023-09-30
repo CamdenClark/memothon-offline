@@ -1,8 +1,6 @@
 
 import { useContext, useState } from "react";
-import { Link, Outlet, useLoaderData } from "react-router-dom";
-import ReactMarkdown from 'react-markdown';
-import rehypePrism from "@mapbox/rehype-prism";
+import { useLoaderData } from "react-router-dom";
 import { StoreContext } from "./StoreProvider";
 import Card from "./components/Card";
 
