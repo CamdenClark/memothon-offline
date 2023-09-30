@@ -1,4 +1,3 @@
-
 import { useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { StoreContext } from "./StoreProvider";
@@ -62,7 +61,7 @@ function Review() {
                         <div className="toolbar"><button onClick={onReview}>Again</button></div>
                         : <button onClick={() => setShowBack(true)}>Show back</button>}
                 </div>
-                }
+            }
 
         </div>
     )

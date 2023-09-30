@@ -7,7 +7,7 @@ export default function Card({ card, showBack }) {
     return (
         <ReactMarkdown
             rehypePlugins={[
-            [rehypePrism, { ignoreMissing: true }]]}>
+                [rehypePrism, { ignoreMissing: true }]]}>
             {content}
         </ReactMarkdown>
     );
