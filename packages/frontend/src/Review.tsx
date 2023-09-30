@@ -43,23 +43,26 @@ function Review() {
         query(addReviewSQL, [crypto.randomUUID(), card.id])
     }
 
+    if (count == 0) {
+        return <div className="box ok">
+            Nothing left to review!
+        </div>
+    }
+
     return (
         <div>
             {count}
-            {card ?
+            {card &&
                 <div className="f-col justify-content:space-between"
-                style={{ height: "100%"}}>
-                <div className="box">
-                    <Card card={card} showBack={showBack} />
+                    style={{ height: "100%" }}>
+                    <div className="box">
+                        <Card card={card} showBack={showBack} />
                     </div>
                     {showBack ?
                         <div className="toolbar"><button onClick={onReview}>Again</button></div>
                         : <button onClick={() => setShowBack(true)}>Show back</button>}
                 </div>
-                :
-                <div className="box ok">
-                    Nothing left to review!
-                </div>}
+                }
 
         </div>
     )
