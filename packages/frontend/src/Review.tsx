@@ -4,6 +4,7 @@ import { Link, Outlet, useLoaderData } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import rehypePrism from "@mapbox/rehype-prism";
 import { StoreContext } from "./StoreProvider";
+import Card from "./components/Card";
 
 const reviewSQL = `
 SELECT c.id, c.front, c.back
@@ -51,9 +52,7 @@ function Review() {
                 <div className="f-col justify-content:space-between"
                 style={{ height: "100%"}}>
                 <div className="box">
-                    <ReactMarkdown rehypePlugins={[[rehypePrism, { ignoreMissing: true }]]}>
-                        {card.front + (card.back !== "" ? "\n\n---\n\n" + card.back : "")}
-                    </ReactMarkdown>
+                    <Card card={card} showBack={showBack} />
                     </div>
                     {showBack ?
                         <div className="toolbar"><button onClick={onReview}>Again</button></div>

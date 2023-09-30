@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypePrism from "@mapbox/rehype-prism";
 import { Form } from 'react-router-dom';
+import Card from './components/Card';
 
 const createCardSQL = `INSERT INTO cards (id, front, back) VALUES (?,?,?);`
 
@@ -18,6 +19,7 @@ const action = ({ query }) => async ({ request, params }) => {
 function CreateCard() {
     const [front, setFront] = useState("");
     const [back, setBack] = useState("");
+    const card = { front, back };
 
     return (
         <>
@@ -60,8 +62,7 @@ function CreateCard() {
                 <div className="titlebar">Preview
                 </div>
 
-                <ReactMarkdown rehypePlugins={[[rehypePrism, { ignoreMissing: true }]]}>
-                    {front + (back !== "" ? "\n\n---\n\n" + back : "")}</ReactMarkdown>
+                <Card card={card} showBack={true} />
             </div>
 
         </>
