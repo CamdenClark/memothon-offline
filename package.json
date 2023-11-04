@@ -4,7 +4,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "vite-plugin-pwa": "^0.16.6"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
