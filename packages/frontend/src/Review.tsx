@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { useLoaderData } from "react-router-dom";
-import { StoreContext } from "./StoreProvider";
+import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import { StoreContext, StoreContextData } from "./StoreProvider";
 import Card from "./components/Card";
 
 const reviewSQL = `
@@ -21,50 +21,56 @@ INSERT INTO reviews
    (?,?,unixepoch('now', '1 day'),unixepoch())`;
 
 
-const loader = ({ query }) => async ({ request, params }) => {
-    return query(reviewSQL, []);
+type CardData = {
+  id: string;
+  front: string;
+  back: string;
+};
+
+const loader = ({ query }: StoreContextData) => async ({ }: LoaderFunctionArgs): CardData[] => {
+  return query(reviewSQL, []);
 }
 
 function Review() {
-    const { query } = useContext(StoreContext);
+  const { query } = useContext(StoreContext);
 
-    const cardsToReview = useLoaderData();
-    const [cards, setCards] = useState(cardsToReview);
-    const count = cards.length;
+  const cardsToReview = useLoaderData();
+  const [cards, setCards] = useState(cardsToReview);
+  const count = cards.length;
 
-    const card = count > 0 && cards[0];
+  const card = count > 0 && cards[0];
 
-    const [showBack, setShowBack] = useState(false);
+  const [showBack, setShowBack] = useState(false);
 
-    const onReview = () => {
-        setCards(cards => cards.slice(1));
-        setShowBack(false);
-        query(addReviewSQL, [crypto.randomUUID(), card.id])
-    }
+  const onReview = () => {
+    setCards(cards => cards.slice(1));
+    setShowBack(false);
+    query(addReviewSQL, [crypto.randomUUID(), card.id])
+  }
 
-    if (count == 0) {
-        return <div className="box ok">
-            Nothing left to review!
+  if (count == 0) {
+    return <div className="box ok">
+      Nothing left to review!
+    </div>
+  }
+
+  return (
+    <div>
+      {count}
+      {card &&
+        <div className="f-col justify-content:space-between"
+          style={{ height: "100%" }}>
+          <div className="box">
+            <Card card={card} showBack={showBack} />
+          </div>
+          {showBack ?
+            <div className="toolbar"><button onClick={onReview}>Again</button></div>
+            : <button onClick={() => setShowBack(true)}>Show back</button>}
         </div>
-    }
+      }
 
-    return (
-        <div>
-            {count}
-            {card &&
-                <div className="f-col justify-content:space-between"
-                    style={{ height: "100%" }}>
-                    <div className="box">
-                        <Card card={card} showBack={showBack} />
-                    </div>
-                    {showBack ?
-                        <div className="toolbar"><button onClick={onReview}>Again</button></div>
-                        : <button onClick={() => setShowBack(true)}>Show back</button>}
-                </div>
-            }
-
-        </div>
-    )
+    </div>
+  )
 }
 
 export { Review, loader };
