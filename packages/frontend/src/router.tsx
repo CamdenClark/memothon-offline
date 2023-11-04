@@ -8,32 +8,32 @@ import { StoreContext } from "./StoreProvider";
 import { useContext } from "react";
 
 export default function Router() {
-    const providerContext = useContext(StoreContext);
+  const providerContext = useContext(StoreContext);
 
-    const router = createBrowserRouter([
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <App />,
+      errorElement: <ErrorPage />,
+      loader: listLoader(providerContext),
+      children: [
         {
-            path: "/",
-            element: <App />,
-            errorElement: <ErrorPage />,
-            loader: listLoader(providerContext),
-            children: [
-                {
-                    path: "/",
-                    element: <Home />,
-                },
-                {
-                    path: "create",
-                    element: <CreateCard />,
-                    action: createAction(providerContext)
-                },
-                {
-                    path: "review",
-                    element: <Review />,
-                    loader: reviewLoader(providerContext),
-                },
-            ]
+          path: "/",
+          element: <Home />,
         },
-    ]);
-    return <RouterProvider router={router} />
+        {
+          path: "create",
+          element: <CreateCard />,
+          action: createAction(providerContext)
+        },
+        {
+          path: "review",
+          element: <Review />,
+          loader: reviewLoader(providerContext),
+        },
+      ]
+    },
+  ]);
+  return <RouterProvider router={router} />
 }
 

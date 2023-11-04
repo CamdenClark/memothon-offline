@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import * as Comlink from "comlink";
 import QueryWorker from './worker.ts?worker';
 
-interface StoreContextData {
+export interface StoreContextData {
   query: (sql: string, bind: (string | number)[]) => Promise<any>;
   cleanup: () => Promise<any>;
 }
@@ -19,7 +19,7 @@ interface WorkerData {
 export const worker = Comlink.wrap<WorkerData>(new QueryWorker());
 
 // Create a react context for the store
-export const StoreContext = createContext<StoreContextData | null>(null);
+export const StoreContext = createContext<StoreContextData>(null!);
 
 export type StoreProviderProps = {
   children: React.ReactNode;
