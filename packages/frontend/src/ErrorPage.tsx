@@ -1,9 +1,15 @@
 import React from 'react';
-const ErrorPage = (props) => {
-    return (
-      <div className="box error">
-         {props.error}
-      </div>
-    );
+
+interface ErrorPageProps {
+  error: string;
+}
+
+const ErrorPage: React.FC<ErrorPageProps> = (props) => {
+  return (
+    <div className="box error">
+      {props.error}
+    </div>
+  );
 };
+
 export default ErrorPage;

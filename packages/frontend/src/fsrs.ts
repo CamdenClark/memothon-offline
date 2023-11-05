@@ -94,11 +94,11 @@ function next_recall_stability(d: number, s: number, r: number, rating: Rating):
     s *
     (1 +
       Math.exp(params[8]) *
-        (11 - d) *
-        Math.pow(s, -params[9]) *
-        (Math.exp((1 - r) * params[10]) - 1) *
-        hard_penalty *
-        easy_bonus)
+      (11 - d) *
+      Math.pow(s, -params[9]) *
+      (Math.exp((1 - r) * params[10]) - 1) *
+      hard_penalty *
+      easy_bonus)
   );
 }
 
@@ -119,14 +119,14 @@ function updateDS(
   rating: Rating
 ): ReviewEntry {
   const difficulty = next_difficulty(last_d, rating);
-  
+
   let stability;
   if (rating === Rating.Again) {
     stability = next_forget_stability(difficulty, last_s, retrievability);
   } else {
     stability = next_recall_stability(difficulty, last_s, retrievability, rating);
   }
-  
+
   return {
     ...card,
     difficulty,
@@ -138,7 +138,7 @@ function updateDS(
 function initDS(card: ReviewEntry, rating: Rating): ReviewEntry {
   const difficulty = init_difficulty(rating);
   const stability = init_stability(rating);
-  
+
   return {
     ...card,
     difficulty: difficulty,
@@ -148,8 +148,8 @@ function initDS(card: ReviewEntry, rating: Rating): ReviewEntry {
 function updateReviewEntryState(card: ReviewEntry, rating: Rating): ReviewEntry {
   let newState;
   let lapses = card.lapses || 0;
-  
-  switch(card.state) {
+
+  switch (card.state) {
     case State.New:
       if (rating === Rating.Again) {
         newState = State.Learning;
@@ -182,7 +182,7 @@ function updateReviewEntryState(card: ReviewEntry, rating: Rating): ReviewEntry 
     default:
       newState = card.state;
   }
-  
+
   return {
     ...card,
     state: newState,
@@ -190,7 +190,7 @@ function updateReviewEntryState(card: ReviewEntry, rating: Rating): ReviewEntry 
   };
 }
 
-  
+
 function scheduleCard(
   card: ReviewEntry,
   rating: Rating,
@@ -244,7 +244,7 @@ function reviewCard(
   rating: Rating
 ): ReviewEntry {
   let updatedCard = { ...card };
-  
+
   if (updatedCard.state === State.New) {
     updatedCard.elapsed_days = 0;
   } else {
@@ -257,7 +257,7 @@ function reviewCard(
   let hard_interval;
   let good_interval;
   let easy_interval;
-  
+
   switch (updatedCard.state) {
     case State.New:
       updatedCard = initDS(card, rating);
@@ -280,7 +280,7 @@ function reviewCard(
           break;
       }
       break;
-      
+
     case State.Learning:
     case State.Relearning:
       good_interval = next_interval(updatedCard.stability);
@@ -310,7 +310,7 @@ function reviewCard(
       let last_d = updatedCard.difficulty;
       let last_s = updatedCard.stability;
       let retrievability = Math.pow(1 + interval / (9 * last_s), -1);
-      
+
       hard_interval = next_interval(updatedCard.stability);
       good_interval = next_interval(updatedCard.stability);
       hard_interval = Math.min(hard_interval, good_interval);
@@ -319,7 +319,7 @@ function reviewCard(
         next_interval(updatedCard.stability),
         good_interval + 1
       );
-      
+
       switch (rating) {
         case Rating.Hard:
           updatedCard.due = new Date(
@@ -339,7 +339,7 @@ function reviewCard(
       }
       break;
   }
-  
+
   return scheduleCard(updateReviewEntryState(updatedCard, rating), rating, now, hard_interval, good_interval, easy_interval);
 }
 

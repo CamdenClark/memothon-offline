@@ -1,4 +1,3 @@
-// In `worker.js`.
 import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 
 import * as Comlink from "comlink";

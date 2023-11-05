@@ -32,7 +32,7 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ query: worker.query, cleanup: worker.cleanup }}>
+    <StoreContext.Provider value={worker}>
       {!loading && children}
     </StoreContext.Provider>
   );

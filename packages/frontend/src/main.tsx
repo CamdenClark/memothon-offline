@@ -6,11 +6,10 @@ import Router from "./router.tsx";
 import "missing.css";
 import "missing.css/prism";
 
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-        <StoreProvider>
-            <Router />
-        </StoreProvider>
-    </React.StrictMode>,
+  <React.StrictMode>
+    <StoreProvider>
+      <Router />
+    </StoreProvider>
+  </React.StrictMode>
 );
