@@ -1,15 +1,11 @@
 import { useState } from 'react';
 import { ActionFunctionArgs, Form } from 'react-router-dom';
-import Card from './components/Card';
-import { StoreContextData } from './StoreProvider';
+import DisplayCard from './components/Card';
+import { WorkerContextData } from './StoreProvider';
 
-const createCardSQL = `INSERT INTO cards (id, front, back) VALUES (?,?,?);`
-
-const createReviewSQL = `INSERT INTO reviews (id, card_id, reviewed_at, due_at) VALUES (?,?,unixepoch(),unixepoch());`
-
-const action = ({ query }: StoreContextData) => async ({ request }: ActionFunctionArgs) => {
+const action = ({ createCard }: WorkerContextData) => async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const newCardId = crypto.randomUUID();
+  const id = crypto.randomUUID();
   const front = formData.get('front');
   const back = formData.get('back');
 
@@ -17,8 +13,7 @@ const action = ({ query }: StoreContextData) => async ({ request }: ActionFuncti
   if (typeof front !== 'string' || typeof back !== 'string') {
     throw new Error('Front and back must be strings.');
   }
-  await query(createCardSQL, [newCardId, front, back]);
-  return await query(createReviewSQL, [crypto.randomUUID(), newCardId]);
+  return await createCard({ id, front, back });
 }
 
 function CreateCard() {
@@ -67,7 +62,7 @@ function CreateCard() {
         <div className="titlebar">Preview
         </div>
 
-        <Card card={card} showBack={true} />
+        <DisplayCard card={card} showBack={true} />
       </div>
 
     </>

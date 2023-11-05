@@ -4,11 +4,11 @@ import Home from "./Home";
 import ErrorPage from "./ErrorPage";
 import { CreateCard, action as createAction } from "./CreateCard";
 import { Review, loader as reviewLoader } from "./Review";
-import { StoreContext } from "./StoreProvider";
+import { WorkerContext } from "./StoreProvider";
 import { useContext } from "react";
 
 export default function Router() {
-  const providerContext = useContext(StoreContext);
+  const providerContext = useContext(WorkerContext);
 
   const router = createBrowserRouter([
     {

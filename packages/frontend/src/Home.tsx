@@ -1,19 +1,19 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { StoreContext } from "./StoreProvider";
+import { WorkerContext } from "./StoreProvider";
 
 function Home() {
-    const { cleanup } = useContext(StoreContext);
-    
-    return (
-        <div>
-            <Link to={"/create"}>Create</Link>
-            <br />
-            <Link to={"/review"}>Review</Link>
-            <div onClick={() => cleanup()}>Cleanup</div>
+  const { cleanup } = useContext(WorkerContext);
 
-        </div>
-    )
+  return (
+    <div>
+      <Link to={"/create"}>Create</Link>
+      <br />
+      <Link to={"/review"}>Review</Link>
+      <div onClick={() => cleanup()}>Cleanup</div>
+
+    </div>
+  )
 }
 
 export default Home;

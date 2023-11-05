@@ -2,6 +2,8 @@ import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 
 import * as Comlink from "comlink";
 
+import { Card } from "./models/Card";
+
 const up = `CREATE TABLE IF NOT EXISTS cards (
     id TEXT PRIMARY KEY,
     front TEXT,
@@ -20,6 +22,7 @@ interface WorkerData {
   db: any;
   init: () => Promise<any>;
   query: (sql: string, bind: (string | number)[]) => Promise<any>;
+  createCard: (card: Card) => Promise<any>;
   select: () => any;
   cleanup: () => Promise<any>;
 }
@@ -50,6 +53,14 @@ const data: WorkerData = {
       return;
     }
     return this.db.exec({ sql, bind, returnValue: "resultRows", rowMode: "object" });
+  },
+  async createCard(card: Card) {
+    await this.query(
+      "INSERT INTO cards (id, front, back) VALUES (?, ?, ?)",
+      [card.id, card.front, card.back]);
+    await this.query(
+      `INSERT INTO reviews (id, card_id, reviewed_at, due_at) VALUES (?,?,unixepoch(),unixepoch());`,
+      [card.id, crypto.randomUUID()]);
   },
   select() {
     return this.query("SELECT * from cards", []);

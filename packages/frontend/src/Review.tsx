@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { StoreContext, StoreContextData } from "./StoreProvider";
+import { WorkerContext, WorkerContextData } from "./StoreProvider";
 import Card from "./components/Card";
 
 const reviewSQL = `
@@ -27,12 +27,12 @@ type CardData = {
   back: string;
 };
 
-const loader = ({ query }: StoreContextData) => async ({ }: LoaderFunctionArgs): CardData[] => {
+const loader = ({ query }: WorkerContextData) => async ({ }: LoaderFunctionArgs): Promise<CardData[]> => {
   return query(reviewSQL, []);
 }
 
 function Review() {
-  const { query } = useContext(StoreContext);
+  const { query } = useContext(WorkerContext);
 
   const cardsToReview = useLoaderData();
   const [cards, setCards] = useState(cardsToReview);
