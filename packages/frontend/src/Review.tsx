@@ -34,7 +34,7 @@ const loader = ({ query }: WorkerContextData) => async ({ }: LoaderFunctionArgs)
 function Review() {
   const { query } = useContext(WorkerContext);
 
-  const cardsToReview = useLoaderData();
+  const cardsToReview = useLoaderData() as CardData[];
   const [cards, setCards] = useState(cardsToReview);
   const count = cards.length;
 
@@ -45,7 +45,9 @@ function Review() {
   const onReview = () => {
     setCards(cards => cards.slice(1));
     setShowBack(false);
-    query(addReviewSQL, [crypto.randomUUID(), card.id])
+    if (card) {
+      query(addReviewSQL, [crypto.randomUUID(), card.id])
+    }
   }
 
   if (count == 0) {

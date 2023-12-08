@@ -1,7 +1,7 @@
 import { Link, LoaderFunctionArgs, Outlet } from "react-router-dom";
-import { StoreContextData } from './StoreProvider';
+import { WorkerContextData } from './StoreProvider';
 
-const loader = ({ query }: StoreContextData) => async ({ }: LoaderFunctionArgs) => {
+const loader = ({ query }: WorkerContextData) => async ({ }: LoaderFunctionArgs) => {
   return query("SELECT * from cards", []);
 }
 

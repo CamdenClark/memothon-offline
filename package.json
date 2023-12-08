@@ -11,6 +11,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@types/mapbox__rehype-prism": "^0.8.3",
     "prismjs": "^1.29.0"
   }
 }
