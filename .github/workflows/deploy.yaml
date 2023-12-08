@@ -12,6 +12,6 @@ jobs:
       - uses: oven-sh/setup-bun@v1
 
       - run: bun install
-        working_dir: packages/frontend
+        working-directory: ./packages/frontend
       - run: bun run build
-        working_dir: packages/frontend
+        working-directory: ./packages/frontend
