@@ -5,13 +5,13 @@
   ],
   "devDependencies": {
     "bun-types": "latest",
-    "vite-plugin-pwa": "^0.16.6"
+    "vite-plugin-pwa": "^0.16.6",
+    "@types/mapbox__rehype-prism": "^0.8.3"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@types/mapbox__rehype-prism": "^0.8.3",
     "comlink": "^4.4.1",
     "prismjs": "^1.29.0"
   }
