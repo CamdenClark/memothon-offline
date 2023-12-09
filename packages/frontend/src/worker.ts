@@ -58,7 +58,7 @@ const data: WorkerData = {
     await this.query(
       "INSERT INTO cards (id, front, back) VALUES (?, ?, ?)",
       [card.id, card.front, card.back]);
-    await this.query(
+    return await this.query(
       `INSERT INTO reviews (id, card_id, reviewed_at, due_at) VALUES (?,?,unixepoch(),unixepoch());`,
       [card.id, crypto.randomUUID()]);
   },

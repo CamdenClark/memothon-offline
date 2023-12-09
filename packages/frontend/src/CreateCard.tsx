@@ -64,7 +64,6 @@ function CreateCard() {
 
         <DisplayCard card={card} showBack={true} />
       </div>
-
     </>
   );
 }
